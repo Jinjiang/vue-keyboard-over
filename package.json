@@ -1,23 +1,43 @@
 {
   "name": "vue-keyboard-over",
   "version": "0.1.0",
-  "private": true,
+  "description": "Utilities for accessibility (a11y) in Vue.js",
+  "main": "dist/vue-keyboard-over.js",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "build": "rm -Rf dist && rollup -c --environment BUILD:production",
+    "lint": "prettier --write .{,/examples,/src}/*.{js,json,css,md,vue}"
   },
-  "dependencies": {
-    "vue": "^2.5.17"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jinjiang/vue-keyboard-over.git"
   },
+  "keywords": [
+    "keyboard",
+    "vue",
+    "vue.js"
+  ],
+  "author": "Jinjiang <zhaojinjiang@me.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Jinjiang/vue-keyboard-over/issues"
+  },
+  "homepage": "https://github.com/Jinjiang/vue-keyboard-over#readme",
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.1.1",
-    "@vue/cli-plugin-eslint": "^3.1.1",
-    "@vue/cli-service": "^3.1.1",
-    "@vue/eslint-config-prettier": "^4.0.0",
-    "babel-eslint": "^10.0.1",
-    "eslint": "^5.8.0",
-    "eslint-plugin-vue": "^5.0.0-0",
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "husky": "^1.1.2",
+    "prettier": "^1.14.3",
+    "pretty-quick": "^1.8.0",
+    "rollup": "^0.66.6",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-vue": "^4.3.2",
+    "vue": "^2.5.17",
     "vue-template-compiler": "^2.5.17"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }
