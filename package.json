@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "Utilities for accessibility (a11y) in Vue.js",
   "main": "dist/vue-keyboard-over.js",
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
     "build": "rm -Rf dist && rollup -c --environment BUILD:production",
     "lint": "prettier --write .{,/examples,/src}/*.{js,json,css,md,vue}"
