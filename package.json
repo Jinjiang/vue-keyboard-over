@@ -8,6 +8,7 @@
     "src"
   ],
   "scripts": {
+    "dev": "rm -Rf dist && rollup -c -w",
     "build": "rm -Rf dist && rollup -c --environment BUILD:production",
     "lint": "prettier --write .{,/examples,/src}/*.{js,json,css,md,vue}"
   },
