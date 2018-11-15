@@ -1,6 +1,6 @@
 {
   "name": "vue-keyboard-over",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Utilities for accessibility (a11y) in Vue.js",
   "main": "dist/vue-keyboard-over.js",
   "files": [
