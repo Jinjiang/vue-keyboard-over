@@ -123,6 +123,11 @@ export default {
       return [...keys, ...modifiers];
     }
   },
+  watch: {
+    output(value) {
+      this.$emit("update", value.slice());
+    }
+  },
   methods: {
     reset() {
       this.modifiers = [];
