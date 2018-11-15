@@ -1,13 +1,13 @@
 <template>
   <div class="keyboard-over">
-    <kbd v-for="key in keys" :key="key">{{ key }}</kbd>
-    <span v-if="keys && keys.length && modifiers && modifiers.length">+</span>
-    <kbd v-for="modifier in modifiers" :key="modifier">{{ modifier }}</kbd>
+    <transition-group name="keyboard-over-list">
+      <kbd v-for="key in output" :key="key">{{ key }}</kbd>
+    </transition-group>
   </div>
 </template>
 
 <script>
-const smartNameMap = {
+export const defaultKeyMap = {
   Meta: "⌘",
   Shift: "⇧",
   Control: "⌃",
@@ -85,7 +85,7 @@ function getKeyName(info, nameType, nameMap) {
   const map = Object.assign(
     {},
     nameMap,
-    type === "smart" ? smartNameMap : null
+    type === "smart" ? defaultKeyMap : null
   );
   return map[value] || value;
 }
@@ -115,6 +115,12 @@ export default {
     },
     nameMap() {
       this.reset();
+    }
+  },
+  computed: {
+    output() {
+      const { keys, modifiers } = this;
+      return [...keys, ...modifiers];
     }
   },
   methods: {
@@ -177,5 +183,15 @@ export default {
 }
 .keyboard-over kbd + kbd {
   margin-left: 0.5em;
+}
+.keyboard-over-list-enter-active {
+  transition: all 0.1s;
+}
+.keyboard-over-list-leave-active {
+  transition: all 0.1s 0.5s;
+}
+.keyboard-over-list-enter,
+.keyboard-over-list-leave-to {
+  opacity: 0;
 }
 </style>
