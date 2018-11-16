@@ -1,6 +1,6 @@
 <template>
   <div class="keyboard-over">
-    <transition-group name="keyboard-over-list">
+    <transition-group :name="transition || 'keyboard-over-list'">
       <kbd v-for="key in output" :key="key">{{ key }}</kbd>
     </transition-group>
   </div>
@@ -92,8 +92,8 @@ function getKeyName(info, nameType, nameMap) {
 
 export default {
   created() {
-    window.addEventListener("keydown", this.keydown);
-    window.addEventListener("keyup", this.keyup);
+    window.addEventListener("keydown", this.keydown, true);
+    window.addEventListener("keyup", this.keyup, true);
   },
   beforeDestroy() {
     window.removeEventListener("keydown", this.keydown);
@@ -101,12 +101,14 @@ export default {
   },
   props: {
     nameType: String,
-    nameMap: Object
+    nameMap: Object,
+    transition: String
   },
   data() {
     return {
       keys: [],
-      modifiers: []
+      modifiers: [],
+      activationMap: {}
     };
   },
   watch: {
@@ -132,13 +134,25 @@ export default {
     reset() {
       this.modifiers = [];
       this.keys = [];
+      this.activationMap = {};
     },
+
     keydown(event) {
+      const info = parseKey(event);
+      const name = getKeyName(info, this.nameType, this.nameMap);
+      if (name === "Unidentified") {
+        return;
+      }
+
+      // avoid missed non-modifier keyup event
+      this.activate(name, info.isModifier);
+
+      // avoid missed meta keyup event when next keydown event comes
+      this.detectMetaKey(event);
+
       if (event.repeat) {
         return;
       }
-      const info = parseKey(event);
-      const name = getKeyName(info, this.nameType, this.nameMap);
       if (info.isModifier) {
         const index = this.modifiers.indexOf(name);
         if (index < 0) {
@@ -164,6 +178,41 @@ export default {
         if (index >= 0) {
           this.keys.splice(index, 1);
         }
+      }
+    },
+
+    activate(name, isModifier) {
+      if (!isModifier) {
+        clearTimeout(this.activationMap[name]);
+        this.activationMap[name] = setTimeout(() => {
+          const index = this.keys.indexOf(name);
+          if (index >= 0) {
+            this.keys.splice(index, 1);
+          }
+        }, 300);
+      }
+    },
+    detectMetaKey(event) {
+      if (event.metaKey) {
+        return;
+      }
+      const metaLeftPrint = getKeyName(
+        { key: "Meta", code: "MetaLeft", smart: "Meta" },
+        this.nameType,
+        this.nameMap
+      );
+      const metaLeftIndex = this.modifiers.indexOf(metaLeftPrint);
+      if (metaLeftIndex >= 0) {
+        this.modifiers.splice(metaLeftIndex, 1);
+      }
+      const metaRightPrint = getKeyName(
+        { key: "Meta", code: "MetaLeft", smart: "Meta" },
+        this.nameType,
+        this.nameMap
+      );
+      const metaRightIndex = this.modifiers.indexOf(metaRightPrint);
+      if (metaRightIndex >= 0) {
+        this.modifiers.splice(metaRightIndex, 1);
       }
     }
   }
