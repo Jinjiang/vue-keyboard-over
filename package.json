@@ -1,6 +1,6 @@
 {
   "name": "vue-keyboard-over",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "A Vue component that display pressed keys on the keyboard by the user right now",
   "main": "dist/vue-keyboard-over.js",
   "files": [
