@@ -1,5 +1,7 @@
 # vue-keyboard-over
 
+> This repo is not under maintenance anymore. Please use with caution.
+
 A Vue component that display pressed keys on the keyboard by the user right now.
 
 ## Install
